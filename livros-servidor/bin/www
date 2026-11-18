@@ -1,0 +1,22 @@
+const app = require('../app');
+const { conexao } = require('../modelo/conexao');
+
+const port = process.env.PORT || 3030;
+
+async function iniciar() {
+  try {
+    await conexao;
+    const servidor = app.listen(port, () => {
+      console.log(`Servidor disponível na porta ${port}`);
+    });
+    servidor.on('error', (error) => {
+      console.error('Não foi possível iniciar o servidor', error);
+      process.exitCode = 1;
+    });
+  } catch (error) {
+    console.error('Não foi possível conectar ao MongoDB', error);
+    process.exitCode = 1;
+  }
+}
+
+iniciar();
